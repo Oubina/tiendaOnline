@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
+<title>Registro y administracion de usuarios</title>
+</head>
+<body>
+    <div th:replace="/header :: header"></div>
+
+	<br>
+
+	<br>
+	<div class="container">
+		<h2>Registro de usuarios usando spring - boot </h2>
+		<p>
+			Bienvenido <span sec:authentication="principal.username">Usuario</span>
+		</p>
+	</div>
+
+	
+
+</body>
+</html>

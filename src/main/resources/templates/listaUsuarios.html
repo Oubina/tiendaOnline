@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
+<title>Registration</title>
+</head>
+<body>
+	<div th:replace="/header :: header"></div>
+
+	<br>
+
+	<br>
+
+	<div class="container">
+		<h2>Registro de usuarios usando spring - boot</h2>
+		<p>
+			Bienvenido <span sec:authentication="principal.username">Usuario</span>
+		</p>
+	</div>
+	<div class="container">
+		<h1>Customer Table</h1>
+		<div class="row col-md-7 table-responsive">
+			<table id="customerTable" class="table">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Apellido</th>
+						<th>Email</th>
+						<th>Acciones</th>
+
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr th:each="user, rowStat: ${listaUsuarios}"
+						th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
+						<td th:text="${user.nombre}"></td>
+						<td th:text="${user.apellido}"></td>
+						<td th:text="${user.email}"></td>
+						<td>
+							<form action="#"
+								th:action="@{/admin/quitarPrivilegios/} + ${{user.id}}"
+								method="get">
+								<button th:id="'table_entry_childs_button_' + ${user.id}"
+									type="submit">
+									<i>Quitar privilegios</i>
+								</button>
+							</form>
+							<form action="#"
+								th:action="@{/admin/darPrivilegios/} + ${{user.id}}"
+								method="get">
+								<button th:id="'table_entry_childs_button_' + ${user.id}"
+									type="submit">
+									<i>Dar privilegios</i>
+								</button>
+							</form>
+							
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</body>
+</html>
