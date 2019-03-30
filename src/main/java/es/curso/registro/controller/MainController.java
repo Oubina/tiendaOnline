@@ -3,12 +3,15 @@ package es.curso.registro.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import es.curso.registro.model.Producto;
 import es.curso.registro.model.Role;
 import es.curso.registro.model.User;
+import es.curso.registro.service.ProductService;
 import es.curso.registro.service.UserService;
 import es.curso.registro.util.Constantes;
 
@@ -17,6 +20,9 @@ public class MainController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	ProductService productService;
 	
     @GetMapping("/")
     public String root() {
@@ -38,8 +44,10 @@ public class MainController {
         return "index";
     }
     
-    @GetMapping("/products")
-    public String productos() {
+    @GetMapping(value = "/products")
+    public String productos(ModelMap model) {
+		model.addAttribute("producto", new Producto());
+    	model.addAttribute("listaProductos", productService.getAll());
         return "productos";
     }
     
