@@ -37,6 +37,12 @@ public class MainController {
     public String userIndex2() {
         return "index";
     }
+    
+    @GetMapping("/products")
+    public String productos() {
+        return "productos";
+    }
+    
     @GetMapping("/admin/home")
     public String listaUsuarios(Model model) {
         model.addAttribute("listaUsuarios" , userService.getAll() );
