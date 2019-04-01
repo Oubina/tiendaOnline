@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import es.curso.registro.model.Pedido;
 import es.curso.registro.model.Producto;
@@ -83,31 +84,22 @@ public class MainController {
 		return "index";
 	}
 
-	// En la base de datos, en la TABLA--> "estado" he añadido:
-	// ----------------------------------
-	// ---id_estado---------estado-------
-	// ----------------------------------
-	// ----- 1 ------------Creado
-	// ----- 2 ------------Pagado
-	// ----- 3 ------------Cancelado
-	// ----- 4 ------------Enviado
-	// ----- 5 ------------Finalizado
-	// ----------------------------------
-	
-	// En la base de datos, en la TABLA--> "pedido" he añadido:
-	// ----------------------------------------------------------------------------------
-	// ---id_pedido---------comentario----------direccion---------id_estado-------usuario(Se corresponde al id de la tabla "user")
-	// ----------------------------------------------------------------------------------
-	// ----- 1 ------------Primer pedido------Calle Alvedro----------2--------------1----
-	// ----- 2 ------------Segundo pedido-----Calle Puerto-----------5--------------1----
-	// ----------------------------------------------------------------------------------
 	@GetMapping(value = "/list-Pedidos")
 	public String getListaPedidos(ModelMap model) {
 		model.addAttribute("pedido", new Pedido());
 		model.addAttribute("listaPedidos", pedidoService.getAll());
 		model.addAttribute("listaEstados", estadoService.getAll());
+		//model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getUsuario().getNombre(),pedido.getComentario(),pedido.getEstado().getEstado()));
 		model.addAttribute("listaUsuarios", userService.getAll());
 		return "listaPedidos";
 	}
+	
+	// Para poder filtrar
+	@PostMapping(value = "/list-Pedidos")
+		public String listEstadoByFiltro(Model model, Pedido pedido) {
+			model.addAttribute("listaEstados", estadoService.getAll());
+			model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getUsuario().getNombre(),pedido.getComentario(),pedido.getEstado().getEstado()));
+			return "listaPedidos";
+		}
 
 }

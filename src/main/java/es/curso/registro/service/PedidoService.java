@@ -21,4 +21,9 @@ public interface PedidoService {
 	public void deletePedidoById(Integer idPedido);
 	
 	public void updatePedido(Integer idPedido);
+
+	Object getPedidosByFiltro(String nombre, String comentario, String estado);
+
+
+
 }

@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 
-<title>Productos</title>
+<title>Pedidos</title>
 </head>
 <body>
 
@@ -16,6 +16,21 @@
 	<br>
 	<br>
 	<div class="container">
+
+	<h1>Búsqueda por estado</h1>
+    <form action="#" th:action="@{/list-Pedidos}" method="post">
+			<select th:name="estados">
+				<option th:each="estado1 : ${listaEstados}"
+					th:value="${estado1.idEstado}" th:text="${estado1.estado}"></option>
+			</select>
+			<!--                     <select th:field="*{idEstado}"> -->
+			<!--                          <option value=""> </option> -->
+<!--                          <option th:each="estado : ${listaEstados}" -->
+<!--                             th:value="${estado.idEstado}" -->
+<!--                             th:text="${estado.estado}" /> -->
+<!--                   </select>			 -->
+        <p><input type="submit" value="Buscar" /></p>
+    </form>
 
 		<div class="container" style="margin-top: 10rem">
 			<div class="panel panel-primary">
