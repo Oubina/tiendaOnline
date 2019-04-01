@@ -15,12 +15,45 @@
 	<div th:replace="/header :: header"></div>
 	<br>
 	<br>
+
+	<div class="container">
+		<div class="container" style="margin-top: 10rem">
+			<div class="panel panel-primary">
+				<div class="panel-heading" style="background-color: #5c6066">
+					<h1 class="text-left">Filtrar tareas por:</h1>
+				</div>
+				<div class="panel-body">
+					<div class="container-fluid d-flex justify-content-center">
+						<div class="container">
+							<form action="/products" method="Post">
+								<div class="form-group">
+									<div class="container-fluid d-flex justify-content-center">
+										<input id="nombre" type="text" name="nombre"
+											th:placeholder="Nombre" class="col-8 mx-5" /> <input
+											id="descripcion" type="text" name="descripcion"
+											th:placeholder="Descripcion" class="col-8 mx-5" /> <input
+											id="precio" type="number" name="precio"
+											th:placeholder="Precio" class="col-8 mx-5" /> <input
+											id="submit" type="submit" value="Filtrar" class="col-2" />
+									</div>
+								</div>
+							</form>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="container">
 
 		<div class="container" style="margin-top: 10rem">
 			<div class="panel panel-primary">
 				<div class="panel-heading" style="background-color: #5c6066">
-					<h1 class="text-left">Lista de Productos disponibles en tienda:</h1>
+					<h1 class="text-left">Lista de productos disponibles en
+						tienda:</h1>
 				</div>
 				<div class="panel-body">
 					<div class="container-fluid d-flex justify-content-center">
@@ -30,6 +63,7 @@
 									<th>Nombre:</th>
 									<th>Descripcion:</th>
 									<th>Precio:</th>
+									<th>Opciones</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -51,8 +85,11 @@
 									<td class="text-center"><span id="precio"
 										data-type="number" data-title="Precio"
 										th:attr="data-url=@{/producto}, data-pk=${producto.idProducto}, data-value=${producto.precio}"
-										class="inline-editable" th:text="${producto.precio}">Precio
+										class="inline-editable" th:text="${producto.precio} + €">Precio
 											del producto</span></td>
+									<td class="text-center"><input id="submit" type="submit"
+										value="Carrito" class="col-2" /></td>
+
 
 								</tr>
 							</tbody>

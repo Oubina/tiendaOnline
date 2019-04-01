@@ -3,6 +3,7 @@ package es.curso.registro.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/css/**",
                             "/img/**",
                             "/webjars/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/products**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/products**").permitAll()
+                    .antMatchers("/list-Pedidos/**").permitAll()
+                    .antMatchers("/carrito/**").permitAll()
                     .antMatchers("/admin/**").hasRole(Constantes.ADMIN)
                     .anyRequest().authenticated()
                 .and()

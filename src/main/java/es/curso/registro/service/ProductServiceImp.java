@@ -20,4 +20,10 @@ public class ProductServiceImp implements ProductService{
 		return productRepository.findAll();
 	}
 
+	@Override
+	public List<Producto> getProductByFiltro(String nombre, String descripcion, double precio) {
+		
+		return productRepository.findProductByFiltro(nombre, descripcion, precio);
+	}
+
 }

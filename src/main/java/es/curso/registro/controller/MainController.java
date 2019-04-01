@@ -1,5 +1,10 @@
 package es.curso.registro.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.curso.registro.model.Pedido;
 import es.curso.registro.model.Producto;
@@ -21,6 +27,8 @@ import es.curso.registro.util.Constantes;
 @Controller
 public class MainController {
 
+	private List<String> listaCarrito = new ArrayList<String>();
+	
 	@Autowired
 	UserService userService;
 
@@ -52,6 +60,15 @@ public class MainController {
 	public String userIndex2() {
 		return "index";
 	}
+	
+	@RequestMapping("/carrito")
+	public String overview(HttpSession session) {
+		
+		session.setAttribute("listaCarrito", listaCarrito);
+		return "/carrito";
+	}
+
+
 
 	@GetMapping(value = "/products")
 	public String productos(ModelMap model) {
@@ -101,5 +118,12 @@ public class MainController {
 			model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getUsuario().getNombre(),pedido.getComentario(),pedido.getEstado().getEstado()));
 			return "listaPedidos";
 		}
+	
+	@PostMapping(value = "/products")
+	public String sendData(Model model, Producto producto) {
+		model.addAttribute("listaProductos", productService.getProductByFiltro(producto.getNombre(),producto.getDescripcion(), producto.getPrecio()));
+		
+		return "productos";
+	}
 
 }
