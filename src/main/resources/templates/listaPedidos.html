@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
+<title>Productos</title>
+</head>
+<body>
+
+	<div th:replace="/header :: header"></div>
+	<br>
+	<br>
+	<div class="container">
+
+		<div class="container" style="margin-top: 10rem">
+			<div class="panel panel-primary">
+				<div class="panel-heading" style="background-color: #5c6066">
+					<h1 class="text-left">Lista de Pedidos realizados:</h1>
+				</div>
+				<div class="panel-body">
+					<div class="container-fluid d-flex justify-content-center">
+						<table class="table table-striped" id="listaPedidos">
+							<thead>
+								<tr>
+									<th>Nombre del usuario:</th>
+									<th>Comentario del pedido:</th>
+									<th>Dirección del pedido:</th>
+									<th>Estado del pedido:</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="pedido : ${listaPedidos}"
+									th:id="|pedido_${pedido.idPedido}|">
+
+									<td scope="row"><span id="user" data-type="text"
+										data-title="Usuario"
+										th:attr="data-url=@{/pedido}, data-pk=${pedido.idPedido}, data-value=${pedido.usuario.nombre}"
+										class="inline-editable" th:text="${pedido.usuario.nombre}">Nombre
+											del usuario</span></td>
+
+									<td class="text-left"><span id="direccion"
+										data-type="text" data-title="Direccion"
+										th:attr="data-url=@{/pedido}, data-pk=${pedido.idPedido}, data-value=${pedido.comentario}"
+										class="inline-editable" th:text="${pedido.comentario}">Comentario
+											acerca del pedido</span></td>
+
+									<td class="text-left"><span id="direccion"
+										data-type="text" data-title="Direccion"
+										th:attr="data-url=@{/pedido}, data-pk=${pedido.idPedido}, data-value=${pedido.direccion}"
+										class="inline-editable" th:text="${pedido.direccion}">Dirección
+											del pedido</span></td>
+
+									<td class="text-center"><span id="estado" data-type="text"
+										data-title="Estado"
+										th:attr="data-url=@{/pedido}, data-pk=${pedido.idPedido}, data-value=${pedido.estado.estado}"
+										class="inline-editable" th:text="${pedido.estado.estado}">Estado
+											del pedido</span></td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<br>
+	<br>
+
+	<script type="text/javascript"
+		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+	<script type="text/javascript"
+		th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>
