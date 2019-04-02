@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import es.curso.registro.model.Estado;
-import es.curso.registro.model.LineaPedido;
+import es.curso.registro.model.LineaCarrito;
 import es.curso.registro.model.Pedido;
 import es.curso.registro.model.Producto;
 import es.curso.registro.model.Role;
@@ -26,8 +25,9 @@ import es.curso.registro.util.Constantes;
 
 @Controller
 public class MainController {
-	
+
 	List<Producto> listaCarrito = new ArrayList<Producto>();
+	List<LineaCarrito> listLineaCarrito = new ArrayList<LineaCarrito>();
 
 	@Autowired
 	UserService userService;
@@ -60,13 +60,12 @@ public class MainController {
 	public String userIndex2() {
 		return "index";
 	}
-	
+
 	@GetMapping("/carrito")
 	public String carrito2(Model model) {
 		model.addAttribute("listaCarrito", listaCarrito);
 		return "carrito";
 	}
-
 
 	@GetMapping(value = "/products")
 	public String productos(ModelMap model) {
@@ -124,21 +123,6 @@ public class MainController {
 		return "productos";
 	}
 
-//	@GetMapping(value = "/carrito")
-//	public String getAddPedido(ModelMap model) {
-//		model.addAttribute("pedido", new Pedido());
-//		return "carrito";
-//	}
-//
-//	@PostMapping(value = "/carrito")
-//	public String addPedido(ModelMap model, User usuario, String direccion, String comentario,
-//			List<LineaPedido> listaLineaPedido, Estado estado, RedirectAttributes redir) {
-//		
-//		pedidoService.addPedido(usuario, direccion, comentario, listaLineaPedido, estado);
-//		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
-//		return "redirect:/listaPedidos";
-//	}
-
 	@GetMapping(value = "/addProducto")
 	public String getAddProducto(ModelMap model) {
 		model.addAttribute("producto", new Producto());
@@ -154,15 +138,28 @@ public class MainController {
 		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
 		return "redirect:/products";
 	}
-	
+
 	@PostMapping(value = "/addCarrito")
 	public String addCarrito(Model model, Integer idd) {
 		Producto producto = productService.getProductById(idd);
-		listaCarrito .add(producto);
+
+		int cantidad=0;
+		LineaCarrito lineaCarrito = new LineaCarrito(producto, cantidad);
+
+		
+		listLineaCarrito.add(lineaCarrito);
+
+		for (int i = 0; i < listLineaCarrito.size(); i++) {
+			if (listLineaCarrito.get(i).getCantidad() == (producto.getIdProducto()))
+				cantidad += listLineaCarrito.get(i).getCantidad();
+		}
+
+		listaCarrito.add(producto);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaProductos", productService.getAll());
 		model.addAttribute("listaCarrito", listaCarrito);
-	
+		model.addAttribute("listLineaCarrito", listLineaCarrito);
+
 		return "productos";
 	}
 }
