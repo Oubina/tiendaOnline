@@ -148,26 +148,19 @@ public class MainController {
 		int cantidad = 1;
 		LineaCarrito lineaCarrito = new LineaCarrito(producto, cantidad);
 
-		if (listLineaCarrito.isEmpty()) {
-			listLineaCarrito.add(lineaCarrito);
-		} else {
-			for (int i = 0; i < listLineaCarrito.size(); i++) {
-				if (listLineaCarrito.get(i).getProducto().getIdProducto() == (producto.getIdProducto())) {
-					listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad() + 1);
-				}else {
-					listLineaCarrito.add(lineaCarrito);
-				}
+		for (int i = 0; i < listLineaCarrito.size(); i++) {
+			if (listLineaCarrito.get(i).getProducto().getIdProducto() == (producto.getIdProducto())) {
+				listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad() + 1);
+				model.addAttribute("producto", new Producto());
+				model.addAttribute("listaProductos", productService.getAll());
+				model.addAttribute("listaCarrito", listaCarrito);
+				model.addAttribute("listLineaCarrito", listLineaCarrito);
+				return "productos";
 			}
 		}
-//		for (int i = 0; i < listLineaCarrito.size(); i++) {
-//			if (listLineaCarrito.get(i).getProducto().getIdProducto() == (producto.getIdProducto())) {
-//				listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad()+1);
-//			} 
-//			else { 
-//				listLineaCarrito.add(lineaCarrito);
-//			}
 
-//		listLineaCarrito.add(lineaCarrito);
+
+		listLineaCarrito.add(lineaCarrito);
 		listaCarrito.add(producto);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaProductos", productService.getAll());

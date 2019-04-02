@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/list-Pedidos/**").permitAll()
                     .antMatchers("/products/**").permitAll()
                     .antMatchers("/carrito/**").permitAll()
+                    .antMatchers("/addCarrito/**").permitAll()
                     .antMatchers("/addProducto/**").permitAll()
                     .antMatchers("/admin/**").hasRole(Constantes.ADMIN)
                     .anyRequest().authenticated()

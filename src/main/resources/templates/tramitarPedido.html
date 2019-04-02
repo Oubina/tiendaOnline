@@ -11,8 +11,7 @@
 <title>Carrito de compra</title>
 </head>
 <body>
-
-	<div th:replace="/header :: header"></div>
+<div th:replace="/header :: header"></div>
 
 	<br>
 	<br>
@@ -35,8 +34,8 @@
 					<th:block th:each="carrito : ${listLineaCarrito}">
 						<tr>
 							<td th:text="${carrito.producto.nombre}"></td>
-							<td th:text="${carrito.producto.precio}+ ' '  + €"></td>
-							<td th:text="${carrito.cantidad} + ' ' +unidades"></td>
+							<td th:text="${carrito.producto.precio}"></td>
+							<td th:text="${carrito.cantidad}"></td>
 						</tr>
 					</th:block>
 				</tbody>
