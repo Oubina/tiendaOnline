@@ -1,5 +1,6 @@
 package es.curso.registro.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import es.curso.registro.util.Constantes;
 
 @Controller
 public class MainController {
+	
+	List<Producto> listaCarrito = new ArrayList<Producto>();
 
 	@Autowired
 	UserService userService;
@@ -150,5 +153,16 @@ public class MainController {
 		productService.addProducto(nombre, descripcion, marca, precio, cantidad);
 		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
 		return "redirect:/products";
+	}
+	
+	@PostMapping(value = "/addCarrito")
+	public String addCarrito(Model model, Integer idd) {
+		Producto producto = productService.getProductById(idd);
+		listaCarrito .add(producto);
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("listaProductos", productService.getAll());
+		model.addAttribute("listaCarrito", listaCarrito);
+	
+		return "productos";
 	}
 }

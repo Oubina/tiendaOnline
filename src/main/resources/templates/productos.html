@@ -61,7 +61,7 @@
 									<th>Nombre:</th>
 									<th>Descripcion:</th>
 									<th>Precio:</th>
-									<th>Opciones</th>
+									<th>Cantidad</th>
 									<th>Añadir productos</th>
 								</tr>
 							</thead>
@@ -81,15 +81,25 @@
 										class="inline-editable" th:text="${producto.descripcion}">Descripcion
 											del producto</span></td>
 
-									<td class="text-left"><span id="precio"
-										data-type="number" data-title="Precio"
+									<td class="text-left"><span id="precio" data-type="number"
+										data-title="Precio"
 										th:attr="data-url=@{/producto}, data-pk=${producto.idProducto}, data-value=${producto.precio}"
 										class="inline-editable" th:text="${producto.precio} + €">Precio
 											del producto</span></td>
-									<td class="text-left"><input id="submit" type="submit"
-										value="Carrito" /></td>
-									<td class="text-left"><a href="/addProducto"><input id="submit"
-											type="submit" value="Añadir producto" /></a></td>
+
+									<td class="text-center"><span id="cantidad"
+										data-type="number" data-title="Cantidad"
+										class="inline-editable" th:text="${producto.cantidad}">Cantidad</span></td>
+									<td class="text-center">
+										<form action="#" th:action="@{/addCarrito}" method="post">
+
+											<input type="hidden" name="idd"
+												th:value="${producto.idProducto}"> <input
+												id="submit" type="submit" value="Añadir al carrito" class="col-2" />
+										</form>
+									</td>
+									<td class="text-left"><a href="/addProducto"><input
+											id="submit" type="submit" value="Añadir producto" /></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -100,6 +110,15 @@
 
 
 	</div>
+
+	<table>
+		<th:block th:each="carrito : ${listaCarrito}">
+			<tr>
+				<td th:text="${carrito.nombre}"></td>
+				<td th:text="${carrito.precio}"></td>
+			</tr>
+		</th:block>
+	</table>
 
 	<br>
 	<br>
