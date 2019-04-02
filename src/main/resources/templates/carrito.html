@@ -32,10 +32,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<th:block th:each="carrito : ${listaCarrito}">
+					<th:block th:each="carrito : ${listLineaCarrito}">
 						<tr>
-							<td th:text="${carrito.nombre}"></td>
-							<td th:text="${carrito.precio}"></td>
+							<td th:text="${carrito.producto.nombre}"></td>
+							<td th:text="${carrito.producto.precio}"></td>
 							<td th:text="x + ${carrito.cantidad}"></td>
 						</tr>
 					</th:block>
