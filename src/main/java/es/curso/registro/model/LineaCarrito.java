@@ -4,7 +4,7 @@ public class LineaCarrito {
 
 	private Producto producto;
 
-	private int cantidad=1;
+	private int cantidad;
 
 	public Producto getProducto() {
 		return producto;

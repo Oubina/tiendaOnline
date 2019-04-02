@@ -11,18 +11,31 @@
 <title>Carrito de compra</title>
 </head>
 <body>
-
 	<div th:replace="/header :: header"></div>
-
 	<br>
 	<br>
 	<br>
 	<br>
+	<div class="container-fluid d-flex justify-content-center"
+		align="right">
+		<div class="container-fluid d-flex justify-content-right">
+			<tr>
+				<td sec:authorize="isAuthenticated()" class=" text-right"
+					align="right"><a href="/tramitarPedido"><input id="submit"
+						type="submit" value="Tramitar pedido" /></a></td>
+			</tr>
+			<tr>
+				<td sec:authorize="!isAuthenticated()" class=" text-right"
+					align="right"><a href="/"><input id="submit"
+						type="submit" value="Loguearse" /></a></td>
+			</tr>
+		</div>
+	</div>
 	<br>
 	<br>
-
 	<div class="panel-body">
 		<div class="container-fluid d-flex justify-content-center">
+
 			<table class="table table-striped" id="listaProductos">
 				<thead>
 					<tr>
@@ -43,13 +56,8 @@
 			</table>
 		</div>
 	</div>
-<!-- 	<table> -->
-
-<!-- 	</table> -->
-
 	<br>
 	<br>
-
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
 	<script type="text/javascript"

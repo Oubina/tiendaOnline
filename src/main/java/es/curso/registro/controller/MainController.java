@@ -3,7 +3,11 @@ package es.curso.registro.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -62,7 +66,7 @@ public class MainController {
 	}
 
 	@GetMapping("/carrito")
-	public String carrito2(Model model) {
+	public String carrito(Model model) {
 //		model.addAttribute("listaCarrito", listaCarrito);
 		model.addAttribute("listLineaCarrito", listLineaCarrito);
 		return "carrito";
@@ -168,5 +172,22 @@ public class MainController {
 		model.addAttribute("listLineaCarrito", listLineaCarrito);
 
 		return "productos";
+	}
+	
+	@GetMapping (value="/tramitarPedido")
+	public String tramitarPedido(Model model, HttpSession session){
+		Pedido pedido = new Pedido ();
+		double precioFinal = 0.0D;
+		for (LineaCarrito lineaCarrito : listLineaCarrito) {
+			precioFinal += lineaCarrito.getCantidad() * Double.valueOf(lineaCarrito.getProducto().getPrecio());
+		}
+	    Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	    User user = userService.findByEmail(loggedInUser.getName());
+		pedido.setPrecioFinal(precioFinal);
+		pedido.setUsuario(user);
+		
+		model.addAttribute("pedido", pedido); 
+		model.addAttribute("listaCarrito", listLineaCarrito); 
+		return "tramitarPedido";
 	}
 }

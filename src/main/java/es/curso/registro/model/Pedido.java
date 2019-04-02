@@ -33,6 +33,9 @@ public class Pedido {
 	@Column(name = "comentario")
 	private String comentario;
 
+	@Column(name = "precioFinal")
+	private Double precioFinal;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pedido")
 	private List<LineaPedido> listaLineaPedido;
 
@@ -90,6 +93,14 @@ public class Pedido {
 
 	public Pedido() {
 
+	}
+
+	public Double getPrecioFinal() {
+		return precioFinal;
+	}
+
+	public void setPrecioFinal(Double precioFinal) {
+		this.precioFinal = precioFinal;
 	}
 
 	public Pedido(User usuario, String direccion, String comentario, List<LineaPedido> listaLineaPedido,
