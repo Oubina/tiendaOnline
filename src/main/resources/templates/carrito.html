@@ -13,44 +13,42 @@
 <body>
 
 	<div th:replace="/header :: header"></div>
-	
+
 	<br>
 	<br>
 	<br>
 	<br>
-	<div class="row">
-		<div class="col-md-6">
-			<th:block th:fragment="form">
-				<form th:action="@{|/carrito|}"
-					th:object="${producto}" method="post">
-					<div class="form-group">
-						<label class="control-label" th:for="cantidad">Cantidad</label> <input
-							class="form-control" th:field="*{cantidad}" type="number" step="1" min="0" />
-					</div>
-					<div class="form-group">
-						<label class="control-label" th:for="nombre">Nombre</label> <input
-							class="form-control" th:field="*{nombre}" type="text" />
-					</div>
-					<div class="form-group">
-						<label class="control-label" th:for="descripcion">Descripcion</label>
-						<input class="form-control" th:field="*{descripcion}" type="text" />
-					</div>
-					<div class="form-group">
-						<label class="control-label" th:for="marca">Marca</label> <input
-							class="form-control" th:field="*{marca}" type="text" />
-					</div>
-					<div class="form-group">
-						<label class="control-label" th:for="precio">Precio</label> <input
-							class="form-control" th:field="*{precio}" type="text" />
-					</div>
-					<div class="form-group submit-cancel">
-						<input class="btn btn-primary" type="submit" value="Guardar" /> <a
-							class="btn btn-default btn-cancel" th:href="@{/products}">Guardar</a>
-					</div>
-				</form>
-			</th:block>
+	<br>
+	<br>
+
+	<div class="panel-body">
+		<div class="container-fluid d-flex justify-content-center">
+			<table class="table table-striped" id="listaProductos">
+				<thead>
+					<tr>
+						<th>Nombre:</th>
+						<th>Precio</th>
+						<th>Cantidad:</th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="carrito : ${listaCarrito}">
+						<tr>
+							<td th:text="${carrito.nombre}"></td>
+							<td th:text="${carrito.precio}"></td>
+							<td th:text="x + ${carrito.cantidad}"></td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
 		</div>
 	</div>
+<!-- 	<table> -->
+
+<!-- 	</table> -->
+
+	<br>
+	<br>
 
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>

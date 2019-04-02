@@ -61,7 +61,7 @@
 									<th>Nombre:</th>
 									<th>Descripcion:</th>
 									<th>Precio:</th>
-									<th>Cantidad</th>
+									<th>Cantidad:</th>
 									<th>Añadir productos</th>
 								</tr>
 							</thead>
@@ -110,16 +110,6 @@
 
 
 	</div>
-
-	<table>
-		<th:block th:each="carrito : ${listaCarrito}">
-			<tr>
-				<td th:text="${carrito.nombre}"></td>
-				<td th:text="${carrito.precio}"></td>
-			</tr>
-		</th:block>
-	</table>
-
 	<br>
 	<br>
 

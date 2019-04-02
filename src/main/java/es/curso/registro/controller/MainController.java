@@ -60,13 +60,13 @@ public class MainController {
 	public String userIndex2() {
 		return "index";
 	}
+	
+	@GetMapping("/carrito")
+	public String carrito2(Model model) {
+		model.addAttribute("listaCarrito", listaCarrito);
+		return "carrito";
+	}
 
-//	@RequestMapping("/carrito")
-//	public String overview(HttpSession session, List<LineaPedido> listaCarrito) {
-//
-//		session.setAttribute("listaCarrito", listaCarrito);
-//		return "/carrito";
-//	}
 
 	@GetMapping(value = "/products")
 	public String productos(ModelMap model) {
@@ -124,20 +124,20 @@ public class MainController {
 		return "productos";
 	}
 
-	@GetMapping(value = "/carrito")
-	public String getAddPedido(ModelMap model) {
-		model.addAttribute("pedido", new Pedido());
-		return "carrito";
-	}
-
-	@PostMapping(value = "/carrito")
-	public String addPedido(ModelMap model, User usuario, String direccion, String comentario,
-			List<LineaPedido> listaLineaPedido, Estado estado, RedirectAttributes redir) {
-		
-		pedidoService.addPedido(usuario, direccion, comentario, listaLineaPedido, estado);
-		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
-		return "redirect:/listaPedidos";
-	}
+//	@GetMapping(value = "/carrito")
+//	public String getAddPedido(ModelMap model) {
+//		model.addAttribute("pedido", new Pedido());
+//		return "carrito";
+//	}
+//
+//	@PostMapping(value = "/carrito")
+//	public String addPedido(ModelMap model, User usuario, String direccion, String comentario,
+//			List<LineaPedido> listaLineaPedido, Estado estado, RedirectAttributes redir) {
+//		
+//		pedidoService.addPedido(usuario, direccion, comentario, listaLineaPedido, estado);
+//		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
+//		return "redirect:/listaPedidos";
+//	}
 
 	@GetMapping(value = "/addProducto")
 	public String getAddProducto(ModelMap model) {
