@@ -38,5 +38,9 @@ public class ProductServiceImpl implements ProductService{
 		productRepository.save(producto);
 		
 	}
+	@Override
+	public Producto getProductById(Integer id) {
+		return productRepository.findById(id).get();
+	}
 
 }
