@@ -62,9 +62,8 @@ public class PedidoServiceImpl implements PedidoService {
 	}
 
 	@Override
-	public Object getPedidosByFiltro(String nombre, String comentario, String estado) {
-		return pedidoRepository.getPedidosByFiltro(nombre, comentario, estado);
+	public List<Pedido> getPedidosByFiltro(Integer idEstado) {
+		return pedidoRepository.getPedidosByFiltro(idEstado);
 	}
-
 
 }

@@ -9,7 +9,7 @@ import es.curso.registro.model.Producto;
 import es.curso.registro.repository.ProductRepository;
 
 @Service
-public class ProductServiceImp implements ProductService{
+public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private ProductRepository productRepository;
@@ -21,9 +21,22 @@ public class ProductServiceImp implements ProductService{
 	}
 
 	@Override
-	public List<Producto> getProductByFiltro(String nombre, String descripcion, double precio) {
+	public List<Producto> getProductByFiltro(String nombre, String descripcion, String precio) {
 		
 		return productRepository.findProductByFiltro(nombre, descripcion, precio);
+	}
+
+	@Override
+	public void addProducto(Producto producto) {
+		productRepository.save(producto);
+		
+	}
+
+	@Override
+	public void addProducto(String nombre, String descripcion, String marca, String precio, int cantidad) {
+		Producto producto=new Producto(nombre, descripcion, marca, precio, cantidad);
+		productRepository.save(producto);
+		
 	}
 
 }

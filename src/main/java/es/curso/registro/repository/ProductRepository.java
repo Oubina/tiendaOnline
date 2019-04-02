@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import es.curso.registro.model.Producto;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Producto, Long>{
+public interface ProductRepository extends JpaRepository<Producto, Integer>{
 
-	@Query("select p from Producto p where (p.nombre like %?1%) and (p.descripcion like %?2%) and (p.precio = ?3)")
-	List<Producto> findProductByFiltro(String nombre, String descripcion, double precio);
+	@Query("select p from Producto p where (p.nombre like %?1%) and (p.descripcion like %?2%) and (p.precio like %?3%)")
+	List<Producto> findProductByFiltro(String nombre, String descripcion, String precio);
 }

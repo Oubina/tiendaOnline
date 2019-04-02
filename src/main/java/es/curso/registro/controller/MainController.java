@@ -1,6 +1,5 @@
 package es.curso.registro.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,7 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.curso.registro.model.Estado;
+import es.curso.registro.model.LineaPedido;
 import es.curso.registro.model.Pedido;
 import es.curso.registro.model.Producto;
 import es.curso.registro.model.Role;
@@ -27,8 +29,6 @@ import es.curso.registro.util.Constantes;
 @Controller
 public class MainController {
 
-	private List<String> listaCarrito = new ArrayList<String>();
-	
 	@Autowired
 	UserService userService;
 
@@ -60,15 +60,13 @@ public class MainController {
 	public String userIndex2() {
 		return "index";
 	}
-	
-	@RequestMapping("/carrito")
-	public String overview(HttpSession session) {
-		
-		session.setAttribute("listaCarrito", listaCarrito);
-		return "/carrito";
-	}
 
-
+//	@RequestMapping("/carrito")
+//	public String overview(HttpSession session, List<LineaPedido> listaCarrito) {
+//
+//		session.setAttribute("listaCarrito", listaCarrito);
+//		return "/carrito";
+//	}
 
 	@GetMapping(value = "/products")
 	public String productos(ModelMap model) {
@@ -106,24 +104,54 @@ public class MainController {
 		model.addAttribute("pedido", new Pedido());
 		model.addAttribute("listaPedidos", pedidoService.getAll());
 		model.addAttribute("listaEstados", estadoService.getAll());
-		//model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getUsuario().getNombre(),pedido.getComentario(),pedido.getEstado().getEstado()));
 		model.addAttribute("listaUsuarios", userService.getAll());
 		return "listaPedidos";
 	}
-	
-	// Para poder filtrar
+
+//	// Entra para poder filtrar
 	@PostMapping(value = "/list-Pedidos")
-		public String listEstadoByFiltro(Model model, Pedido pedido) {
-			model.addAttribute("listaEstados", estadoService.getAll());
-			model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getUsuario().getNombre(),pedido.getComentario(),pedido.getEstado().getEstado()));
-			return "listaPedidos";
-		}
-	
+	public String listEstadoByFiltro(Model model, Pedido pedido) {
+		model.addAttribute("listaEstados", estadoService.getAll());
+		model.addAttribute("listaUsuarios", userService.getAll());
+		model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getEstado().getIdEstado()));
+		return "listaPedidos";
+	}
+
 	@PostMapping(value = "/products")
 	public String sendData(Model model, Producto producto) {
-		model.addAttribute("listaProductos", productService.getProductByFiltro(producto.getNombre(),producto.getDescripcion(), producto.getPrecio()));
-		
+		model.addAttribute("listaProductos", productService.getProductByFiltro(producto.getNombre(),
+				producto.getDescripcion(), producto.getPrecio()));
 		return "productos";
 	}
 
+	@GetMapping(value = "/carrito")
+	public String getAddPedido(ModelMap model) {
+		model.addAttribute("pedido", new Pedido());
+		return "carrito";
+	}
+
+	@PostMapping(value = "/carrito")
+	public String addPedido(ModelMap model, User usuario, String direccion, String comentario,
+			List<LineaPedido> listaLineaPedido, Estado estado, RedirectAttributes redir) {
+		
+		pedidoService.addPedido(usuario, direccion, comentario, listaLineaPedido, estado);
+		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
+		return "redirect:/listaPedidos";
+	}
+
+	@GetMapping(value = "/addProducto")
+	public String getAddProducto(ModelMap model) {
+		model.addAttribute("producto", new Producto());
+		return "addProducto";
+	}
+
+	// Quitar permiso en SecurityConfiguration para "/addProducto", solo puede
+	// añadir el administrador
+	@PostMapping(value = "/addProducto")
+	public String addProducto(ModelMap model, String nombre, String descripcion, String marca, String precio,
+			int cantidad, RedirectAttributes redir) {
+		productService.addProducto(nombre, descripcion, marca, precio, cantidad);
+		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
+		return "redirect:/products";
+	}
 }

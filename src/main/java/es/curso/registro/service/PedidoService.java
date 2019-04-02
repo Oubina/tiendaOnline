@@ -9,21 +9,19 @@ import es.curso.registro.model.User;
 
 public interface PedidoService {
 
-	Pedido findPedidoById(Integer idPedido);
+	public Pedido findPedidoById(Integer idPedido);
 
-	List<Pedido> getAll();
-	
+	public List<Pedido> getAll();
+
 	public void addPedido(Pedido pedido);
-	
+
 	public void addPedido(User usuario, String direccion, String comentario, List<LineaPedido> listaLineaPedido,
 			Estado estado);
-	
+
 	public void deletePedidoById(Integer idPedido);
-	
+
 	public void updatePedido(Integer idPedido);
 
-	Object getPedidosByFiltro(String nombre, String comentario, String estado);
-
-
+	public List<Pedido> getPedidosByFiltro(Integer id_estado);
 
 }

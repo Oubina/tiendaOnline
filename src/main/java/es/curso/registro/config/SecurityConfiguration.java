@@ -30,10 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/css/**",
                             "/img/**",
                             "/webjars/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/products**").permitAll()
-                    .antMatchers(HttpMethod.POST, "/products**").permitAll()
                     .antMatchers("/list-Pedidos/**").permitAll()
+                    .antMatchers("/products/**").permitAll()
                     .antMatchers("/carrito/**").permitAll()
+                    .antMatchers("/addProducto/**").permitAll()
                     .antMatchers("/admin/**").hasRole(Constantes.ADMIN)
                     .anyRequest().authenticated()
                 .and()

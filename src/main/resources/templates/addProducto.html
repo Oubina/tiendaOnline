@@ -8,12 +8,11 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 
-<title>Carrito de compra</title>
+<title>Añadir Productos</title>
 </head>
 <body>
-
 	<div th:replace="/header :: header"></div>
-	
+ 
 	<br>
 	<br>
 	<br>
@@ -21,7 +20,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<th:block th:fragment="form">
-				<form th:action="@{|/carrito|}"
+				<form th:action="@{|/addProducto|}"
 					th:object="${producto}" method="post">
 					<div class="form-group">
 						<label class="control-label" th:for="cantidad">Cantidad</label> <input
@@ -51,7 +50,6 @@
 			</th:block>
 		</div>
 	</div>
-
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
 	<script type="text/javascript"
