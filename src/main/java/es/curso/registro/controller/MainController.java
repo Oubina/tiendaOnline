@@ -187,6 +187,7 @@ public class MainController {
 	@GetMapping(value = "/tramitarPedido")
 	public String tramitarPedido(Model model, HttpSession session) {
 		Pedido pedido = new Pedido();
+
 		double precioFinal = 0.0D;
 //		double precioPorLinea = 0.0D;
 		LineaPedido lineaPedido=new LineaPedido();
@@ -199,13 +200,35 @@ public class MainController {
 		User user = userService.findByEmail(loggedInUser.getName());
 		pedido.setPrecioFinal(precioFinal);
 		pedido.setUsuario(user);
-		
 		model.addAttribute("carroCompra", pedido);
+
 		model.addAttribute("usuario", user);
 		model.addAttribute("precioLinea", lineaPedido);
 		model.addAttribute("listaProductos", productService.getAll());
 		model.addAttribute("listaCarrito", listLineaCarrito);
 		return "tramitarPedido";
+	}
+
+	@PostMapping(value = "/formalizarPedido")
+	public String tramitarPedido2(Model model, Pedido carroCompra) {
+		List<LineaPedido> listaLineaPedido = new ArrayList<LineaPedido>();
+
+		for (LineaCarrito lineaCarrito : listLineaCarrito) {
+			LineaPedido linea = new LineaPedido(lineaCarrito.getProducto(), lineaCarrito.getCantidad(),
+					lineaCarrito.getProducto().getPrecio() * lineaCarrito.getCantidad(), carroCompra);
+			listaLineaPedido.add(linea);
+		}
+		carroCompra.setListaLineaPedido(listaLineaPedido);
+		carroCompra.setDireccion(carroCompra.getUsuario().getDireccion());
+		carroCompra.setEstado(estadoService.getEstadoById(1));
+		System.out.println(carroCompra);
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findByEmail(loggedInUser.getName());
+		carroCompra.setUsuario(user);
+		pedidoService.addPedido(carroCompra);
+
+		return "redirect:/list-Pedidos";
+
 	}
 
 }

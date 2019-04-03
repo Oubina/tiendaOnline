@@ -3,11 +3,12 @@ package es.curso.registro.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.curso.registro.model.Estado;
-import es.curso.registro.model.LineaPedido;
 import es.curso.registro.model.Pedido;
 import es.curso.registro.model.User;
 import es.curso.registro.repository.PedidoRepository;
@@ -29,15 +30,18 @@ public class PedidoServiceImpl implements PedidoService {
 		return pedidoRepository.findAll();
 	}
 
-	@Override
+	@Override	
+	@Transactional
 	public void addPedido(Pedido pedido) {
 		pedidoRepository.save(pedido);
 
 	}
 
 	@Override
-	public void addPedido(User usuario, String direccion, String comentario, Estado estado) {
+	@Transactional
+	public void addPedido(User usuario, String direccion, String comentario, Estado estado, double precioFinal) {
 		Pedido pedido = new Pedido(usuario, direccion, comentario, estado);
+		pedido.setPrecioFinal(precioFinal);
 		pedidoRepository.save(pedido);
 
 	}

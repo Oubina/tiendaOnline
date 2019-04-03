@@ -19,12 +19,13 @@
 	<br>
 	<br>
 	<br>
-	<div class="row">
-		<div class="col-md-6">
-			<th:block th:fragment="form">
-				<div class="panel-body">
-					<form th:action="@{|/addCarrito|}" th:object="${carroCompra}"
-						method="post">
+	<form th:action="@{|/formalizarPedido|}" th:object="${carroCompra}"
+		method="post">
+
+		<div class="row">
+			<div class="col-md-6">
+				<th:block th:fragment="form">
+					<div class="panel-body">
 
 						<div class="form-group">
 							<label class="control-label" th:for="precioFinal">Precio
@@ -46,47 +47,50 @@
 								<label class="control-label" th:for="nombre">Nombre</label> <input
 									class="form-control" th:field="*{usuario.nombre}" type="text" />
 							</div>
-
-							<div class="form-group submit-cancel">
-								<a th:href="@{/list-Pedidos}"><input class="btn btn-primary"
-									type="submit" value="Enviar" /> </a>
-							</div>
-					</form>
-				</div>
-			</th:block>
-		</div>
-	</div>
-<!-- 	<form th:action="@{|/tramitarPedido|}" th:object="${lineaPedido}" -->
-<!-- 		method="post"> -->
-<!-- 		<div class="form-group"> -->
-<!-- 			<label class="control-label" th:for="precioPorLinea">Precio -->
-<!-- 				por línea </label> <input class="form-control" th:field="*{precioLinea}" -->
-<!-- 				type="text" /> -->
-<!-- 		</div> -->
-<!-- 	</form> -->
-	<br>
-	<br>
-
-	<div class="container-fluid d-flex justify-content-center">
-		<table class="table table-striped" id="listaProductos">
-			<thead>
-				<tr>
-					<th>Artículo:</th>
-					<th>Precio</th>
-					<th>Unidades:</th>
-				</tr>
-			</thead>
-			<tbody>
-				<th:block th:each="carrito : ${listaCarrito}">
-					<tr>
-						<td th:text="${carrito.producto.nombre}"></td>
-						<td th:text="${carrito.producto.precio}+ ' '  + €"></td>
-						<td th:text="${carrito.cantidad}+ ' ' +unidades"></td>
-					</tr>
+							<input th:value="*{listaLineaPedido}" type="hidden" />
+						</div>
 				</th:block>
-			</tbody>
-		</table>
-	</div>
+			</div>
+		</div>
+		<!-- 	<form th:action="@{|/tramitarPedido|}" th:object="${lineaPedido}" -->
+		<!-- 		method="post"> -->
+		<!-- 		<div class="form-group"> -->
+		<!-- 			<label class="control-label" th:for="precioPorLinea">Precio -->
+		<!-- 				por línea </label> <input class="form-control" th:field="*{precioLinea}" -->
+		<!-- 				type="text" /> -->
+		<!-- 		</div> -->
+		<!-- 	</form> -->
+		<br> <br>
+
+		<div class="container-fluid d-flex justify-content-center">
+			<table class="table table-striped" id="listaProductos">
+				<thead>
+					<tr>
+						<th>Artículo:</th>
+						<th>Precio</th>
+						<th>Unidades:</th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="carrito : ${listaCarrito}">
+						<tr>
+							<td th:text="${carrito.producto.nombre}"></td>
+							<td th:text="${carrito.producto.precio}+ ' '  + €"></td>
+							<td th:text="${carrito.cantidad}+ ' ' +unidades"></td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="form-group submit-cancel">
+			<a th:href="@{/list-Pedidos}"><input class="btn btn-primary"
+				type="submit" value="Enviar" /> </a>
+		</div>
+	</form>
+
+
+
 	</div>
 	<br>
 	<br>
