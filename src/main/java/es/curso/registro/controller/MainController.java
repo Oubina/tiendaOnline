@@ -146,7 +146,7 @@ public class MainController {
 	public String addProducto(ModelMap model, String nombre, String descripcion, String marca, int precio, int cantidad,
 			RedirectAttributes redir) {
 		productService.addProducto(nombre, descripcion, marca, precio, cantidad);
-		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
+		//redir.addFlashAttribute("creadoOk", Boolean.TRUE);
 		return "redirect:/products";
 	}
 
@@ -207,5 +207,42 @@ public class MainController {
 		model.addAttribute("listaCarrito", listLineaCarrito);
 		return "tramitarPedido";
 	}
+	
+	@PostMapping(value = "/enviarPedido")
+	public String enviarPedido(Model model, String usuario, String dirección, double precioFinal, String comentario) {
+		
+//		pedidoService.addPedido(usuario, dirección, precioFinal, comentario);
+//		model.addAttribute("carroCompra", pedido);
+		return null;
+		
+		
+	}
+	
+//	@GetMapping (value="/tramitarPedido")
+//	public String tramitarPedido(Model model, HttpSession session){
+//		Pedido pedido = new Pedido ();
+//		//List<LineaPedido> lineaPedido = new ArrayList<LineaPedido>();
+//		LineaPedido lineaPedido = new LineaPedido();
+//		
+//		double precioFinal = 0.0D;
+//		double precioLinea = 0.0D;
+//		
+//		for (LineaCarrito lineaCarrito : listLineaCarrito) {
+//			precioFinal += lineaCarrito.getCantidad() * Double.valueOf(lineaCarrito.getProducto().getPrecio());
+//			precioLinea =  lineaCarrito.getCantidad() * Double.valueOf(lineaCarrito.getProducto().getPrecio());
+//			
+//			lineaPedido.setPrecioFinalLinea(precioLinea);
+//		}
+//		
+//	    Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+//	    User user = userService.findByEmail(loggedInUser.getName());
+//	    
+//		pedido.setPrecioFinal(precioFinal);
+//		pedido.setUsuario(user);
+//		model.addAttribute("usuario", user);
+//		model.addAttribute("pedido", pedido);
+//		model.addAttribute("lineaPedido", lineaPedido);
+//		return "tramitarPedido";
+//	}
 
 }

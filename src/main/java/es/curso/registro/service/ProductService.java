@@ -8,7 +8,7 @@ public interface ProductService {
 
 	List<Producto> getAll();
 
-	List<Producto> getProductByFiltro(String nombre, String descripcion, int precio);
+	List<Producto> getProductByFiltro(String nombre, String descripcion, double d);
 
 	public void addProducto(Producto producto);
 

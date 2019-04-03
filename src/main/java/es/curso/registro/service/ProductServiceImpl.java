@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<Producto> getProductByFiltro(String nombre, String descripcion, int precio) {
+	public List<Producto> getProductByFiltro(String nombre, String descripcion, double precio) {
 		
 		return productRepository.findProductByFiltro(nombre, descripcion, precio);
 	}

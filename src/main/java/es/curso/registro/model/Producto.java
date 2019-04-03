@@ -32,7 +32,7 @@ public class Producto {
 	private String marca;
 
 	@Column(name = "precio")
-	private int precio;
+	private double precio;
 
 	@Column(name = "cantidad")
 	private int cantidad;
@@ -75,7 +75,7 @@ public class Producto {
 		this.marca = marca;
 	}
 
-	public int getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
