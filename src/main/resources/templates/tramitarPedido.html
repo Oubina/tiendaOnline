@@ -47,16 +47,16 @@
 								<label class="control-label" th:for="nombre">Nombre</label> <input
 									class="form-control" th:field="*{usuario.nombre}" type="text" />
 							</div>
-<<<<<<< HEAD
+
 							<input th:value="*{listaLineaPedido}" type="hidden" />
 						</div>
-=======
 
-							<div class="form-group submit-cancel">
-								<a th:href="@{/enviarPedido}"><input class="btn btn-primary"
-									type="submit" value="Enviar" /> </a>
-							</div>
-					</form>
+
+<!-- 							<div class="form-group submit-cancel"> -->
+<!-- 								<a th:href="@{/enviarPedido}"><input class="btn btn-primary" -->
+<!-- 									type="submit" value="Enviar" /> </a> -->
+<!-- 							</div> -->
+<!-- 					</form> -->
 				</div>
 			</th:block>
 		</div>
@@ -88,7 +88,7 @@
 						<td th:text="${carrito.producto.precio}+ ' '  + €"></td>
 						<td th:text="${carrito.cantidad}+ ' ' +unidades"></td>
 					</tr>
->>>>>>> branch 'master' of https://github.com/Oubina/tiendaOnline.git
+
 				</th:block>
 			</div>
 		</div>
@@ -102,29 +102,29 @@
 		<!-- 	</form> -->
 		<br> <br>
 
-		<div class="container-fluid d-flex justify-content-center">
-			<table class="table table-striped" id="listaProductos">
-				<thead>
-					<tr>
-						<th>Artículo:</th>
-						<th>Precio</th>
-						<th>Unidades:</th>
-					</tr>
-				</thead>
-				<tbody>
-					<th:block th:each="carrito : ${listaCarrito}">
-						<tr>
-							<td th:text="${carrito.producto.nombre}"></td>
-							<td th:text="${carrito.producto.precio}+ ' '  + €"></td>
-							<td th:text="${carrito.cantidad}+ ' ' +unidades"></td>
-						</tr>
-					</th:block>
-				</tbody>
-			</table>
-		</div>
+<!-- 		<div class="container-fluid d-flex justify-content-center"> -->
+<!-- 			<table class="table table-striped" id="listaProductos"> -->
+<!-- 				<thead> -->
+<!-- 					<tr> -->
+<!-- 						<th>Artículo:</th> -->
+<!-- 						<th>Precio</th> -->
+<!-- 						<th>Unidades:</th> -->
+<!-- 					</tr> -->
+<!-- 				</thead> -->
+<!-- 				<tbody> -->
+<!-- 					<th:block th:each="carrito : ${listaCarrito}"> -->
+<!-- 						<tr> -->
+<!-- 							<td th:text="${carrito.producto.nombre}"></td> -->
+<!-- 							<td th:text="${carrito.producto.precio}+ ' '  + €"></td> -->
+<!-- 							<td th:text="${carrito.cantidad}+ ' ' +unidades"></td> -->
+<!-- 						</tr> -->
+<!-- 					</th:block> -->
+<!-- 				</tbody> -->
+<!-- 			</table> -->
+<!-- 		</div> -->
 
 		<div class="form-group submit-cancel">
-			<a th:href="@{/list-Pedidos}"><input class="btn btn-primary"
+			<a th:href="@{/enviarPedido}"><input class="btn btn-primary"
 				type="submit" value="Enviar" /> </a>
 		</div>
 	</form>
