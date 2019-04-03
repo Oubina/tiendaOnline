@@ -13,4 +13,5 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
 	@Query("select p from Pedido p where p.estado.idEstado = ?1")
 	List<Pedido> getPedidosByFiltro(Integer idEstado);
+	
 }

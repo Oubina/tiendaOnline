@@ -36,9 +36,8 @@ public class PedidoServiceImpl implements PedidoService {
 	}
 
 	@Override
-	public void addPedido(User usuario, String direccion, String comentario, List<LineaPedido> listaLineaPedido,
-			Estado estado) {
-		Pedido pedido = new Pedido(usuario, direccion, comentario, listaLineaPedido, estado);
+	public void addPedido(User usuario, String direccion, String comentario, Estado estado) {
+		Pedido pedido = new Pedido(usuario, direccion, comentario, estado);
 		pedidoRepository.save(pedido);
 
 	}
@@ -65,5 +64,7 @@ public class PedidoServiceImpl implements PedidoService {
 	public List<Pedido> getPedidosByFiltro(Integer idEstado) {
 		return pedidoRepository.getPedidosByFiltro(idEstado);
 	}
+	
+	
 
 }

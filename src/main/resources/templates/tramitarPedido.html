@@ -12,64 +12,81 @@
 </head>
 <body>
 	<div th:replace="/header :: header"></div>
-	
+
 	<br>
 	<br>
 	<br>
 	<br>
+	<br>
+	<br>
+	<div class="row">
+		<div class="col-md-6">
+			<th:block th:fragment="form">
+				<div class="panel-body">
+					<form th:action="@{|/addCarrito|}" th:object="${carroCompra}"
+						method="post">
+
+						<div class="form-group">
+							<label class="control-label" th:for="precioFinal">Precio
+								final</label> <input class="form-control" th:field="*{precioFinal}"
+								type="text" />
+
+							<div class="form-group">
+								<label class="control-label" th:for="direccion">Dirección
+									de envío</label> <input class="form-control"
+									th:field="*{usuario.direccion}" type="text" />
+							</div>
+
+							<div class="form-group">
+								<label class="control-label" th:for="comentario">Observaciones</label>
+								<input class="form-control" th:field="*{comentario}" type="text" />
+							</div>
+
+							<div class="form-group">
+								<label class="control-label" th:for="nombre">Nombre</label> <input
+									class="form-control" th:field="*{usuario.nombre}" type="text" />
+							</div>
+
+							<div class="form-group submit-cancel">
+								<a th:href="@{/list-Pedidos}"><input class="btn btn-primary"
+									type="submit" value="Enviar" /> </a>
+							</div>
+					</form>
+				</div>
+			</th:block>
+		</div>
+	</div>
+<!-- 	<form th:action="@{|/tramitarPedido|}" th:object="${lineaPedido}" -->
+<!-- 		method="post"> -->
+<!-- 		<div class="form-group"> -->
+<!-- 			<label class="control-label" th:for="precioPorLinea">Precio -->
+<!-- 				por línea </label> <input class="form-control" th:field="*{precioLinea}" -->
+<!-- 				type="text" /> -->
+<!-- 		</div> -->
+<!-- 	</form> -->
 	<br>
 	<br>
 
-	<div class="panel-body">
-		<form th:action="@{|/addProducto|}"
-					th:object="${pedido}" method="post">
-					<div class="form-group">
-						<label class="control-label" th:for="cantidad">Precio final</label> <input
-							class="form-control" th:field="*{precioFinal}" type="text" />
-					</div>
-					<div class="form-group">
-						<label class="control-label" th:for="cantidad">Direccion</label> <input
-							class="form-control" th:field="*{direccion}" type="text" />
-					</div>
-					<div class="form-group">
-						<label class="control-label" th:for="cantidad">Comentario</label> <input
-							class="form-control" th:field="*{comentario}" type="text" />
-					</div>
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="control-label" th:for="usuario">Usuario</label> <input -->
-<!-- 							class="form-control" th:field="*{usuario.nombre}" type="text" /> -->
-<!-- 					</div> -->
-					
-					
-		</form>
-<!-- 	Precio final del pedido: <span th:text="${pedido.precioFinal}"></span> -->
-<!-- 	<span sec:authentication="principal.direccion">direccion</span> -->
-	
-		<div class="container-fluid d-flex justify-content-center">
-			<table class="table table-striped" id="listaProductos">
-				<thead>
-					<th>Dirección</th>
-					<th>Usuario</th>
-					<th>Cantidad total:</th>
+	<div class="container-fluid d-flex justify-content-center">
+		<table class="table table-striped" id="listaProductos">
+			<thead>
+				<tr>
+					<th>Artículo:</th>
+					<th>Precio</th>
+					<th>Unidades:</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="carrito : ${listaCarrito}">
 					<tr>
-						<th>Nombre:</th>
-						<th>Precio</th>
-						<th>Unidades:</th>
+						<td th:text="${carrito.producto.nombre}"></td>
+						<td th:text="${carrito.producto.precio}+ ' '  + €"></td>
+						<td th:text="${carrito.cantidad}+ ' ' +unidades"></td>
 					</tr>
-				</thead>
-				<tbody>
-					<th:block th:each="carrito : ${listaCarrito}">
-						<tr>
-							<td th:text="${carrito.producto.nombre}"></td>
-							<td th:text="${carrito.cantidad}"></td>
-						</tr>
-<!-- 						<tr> -->
-<!-- 							<td th:text="${carrito.producto.cantidadTotal}"></td> -->
-<!-- 						</tr> -->
-					</th:block>
-				</tbody>
-			</table>
-		</div>
+				</th:block>
+			</tbody>
+		</table>
+	</div>
 	</div>
 	<br>
 	<br>

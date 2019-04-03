@@ -16,6 +16,7 @@ public class User {
     private String apellido;
     private String email;
     private String password;
+    private String direccion;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "usuario")
 	private List<Pedido> listaPedidos;
@@ -88,8 +89,17 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    
 
-    public Collection<Role> getRoles() {
+    public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public Collection<Role> getRoles() {
         return roles;
     }
 
@@ -105,6 +115,7 @@ public class User {
                 ", apellido='" + apellido + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + "*********" + '\'' +
+                ", direccion='" + "*********" + '\'' +
                 ", roles=" + roles +
                 '}';
     }

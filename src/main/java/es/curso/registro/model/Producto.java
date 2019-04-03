@@ -32,7 +32,7 @@ public class Producto {
 	private String marca;
 
 	@Column(name = "precio")
-	private String precio;
+	private int precio;
 
 	@Column(name = "cantidad")
 	private int cantidad;
@@ -75,11 +75,11 @@ public class Producto {
 		this.marca = marca;
 	}
 
-	public String getPrecio() {
+	public int getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(String precio) {
+	public void setPrecio(int precio) {
 		this.precio = precio;
 	}
 
@@ -91,7 +91,7 @@ public class Producto {
 		this.cantidad = cantidad;
 	}
 
-	public Producto(String nombre, String descripcion, String marca, String precio, int cantidad) {
+	public Producto(String nombre, String descripcion, String marca, int precio, int cantidad) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.marca = marca;

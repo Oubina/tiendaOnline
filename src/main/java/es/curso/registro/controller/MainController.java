@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.curso.registro.model.LineaCarrito;
+import es.curso.registro.model.LineaPedido;
 import es.curso.registro.model.Pedido;
 import es.curso.registro.model.Producto;
 import es.curso.registro.model.Role;
@@ -65,13 +66,6 @@ public class MainController {
 		return "index";
 	}
 
-	@GetMapping("/carrito")
-	public String carrito(Model model) {
-//		model.addAttribute("listaCarrito", listaCarrito);
-		model.addAttribute("listLineaCarrito", listLineaCarrito);
-		return "carrito";
-	}
-
 	@GetMapping(value = "/products")
 	public String productos(ModelMap model) {
 		model.addAttribute("producto", new Producto());
@@ -114,13 +108,24 @@ public class MainController {
 
 //	// Entra para poder filtrar
 	@PostMapping(value = "/list-Pedidos")
-	public String listEstadoByFiltro(Model model, Pedido pedido) {
+	public String listEstadoByFiltro(Model model, RedirectAttributes redir, Producto producto, int cantidad,
+			double precioFinalLinea, Pedido pedido) {
+
+		LineaPedido lineaPedido = new LineaPedido(producto, cantidad, precioFinalLinea, pedido);
+
 		model.addAttribute("listaEstados", estadoService.getAll());
 		model.addAttribute("listaUsuarios", userService.getAll());
 		model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getEstado().getIdEstado()));
+
+		model.addAttribute("lineaPedido", lineaPedido.getPedido());
+		model.addAttribute("lineaPedido", lineaPedido.getProducto());
+		model.addAttribute("lineaPedido", lineaPedido.getPrecioFinalLinea());
+		model.addAttribute("lineaPedido", lineaPedido.getCantidad());
+
 		return "listaPedidos";
 	}
 
+//Para poder aplicar los filtros
 	@PostMapping(value = "/products")
 	public String sendData(Model model, Producto producto) {
 		model.addAttribute("listaProductos", productService.getProductByFiltro(producto.getNombre(),
@@ -136,12 +141,19 @@ public class MainController {
 
 	// Quitar permiso en SecurityConfiguration para "/addProducto", solo puede
 	// añadir el administrador
+	// Crea un nuevo producto en la BBDD
 	@PostMapping(value = "/addProducto")
-	public String addProducto(ModelMap model, String nombre, String descripcion, String marca, String precio,
-			int cantidad, RedirectAttributes redir) {
+	public String addProducto(ModelMap model, String nombre, String descripcion, String marca, int precio, int cantidad,
+			RedirectAttributes redir) {
 		productService.addProducto(nombre, descripcion, marca, precio, cantidad);
 		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
 		return "redirect:/products";
+	}
+
+	@GetMapping("/carrito")
+	public String carrito(Model model) {
+		model.addAttribute("listLineaCarrito", listLineaCarrito);
+		return "carrito";
 	}
 
 	@PostMapping(value = "/addCarrito")
@@ -157,12 +169,10 @@ public class MainController {
 				listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad() + 1);
 				model.addAttribute("producto", new Producto());
 				model.addAttribute("listaProductos", productService.getAll());
-				model.addAttribute("listaCarrito", listaCarrito);
 				model.addAttribute("listLineaCarrito", listLineaCarrito);
 				return "productos";
 			}
 		}
-
 
 		listLineaCarrito.add(lineaCarrito);
 		listaCarrito.add(producto);
@@ -173,21 +183,29 @@ public class MainController {
 
 		return "productos";
 	}
-	
-	@GetMapping (value="/tramitarPedido")
-	public String tramitarPedido(Model model, HttpSession session){
-		Pedido pedido = new Pedido ();
+
+	@GetMapping(value = "/tramitarPedido")
+	public String tramitarPedido(Model model, HttpSession session) {
+		Pedido pedido = new Pedido();
 		double precioFinal = 0.0D;
+//		double precioPorLinea = 0.0D;
+		LineaPedido lineaPedido=new LineaPedido();
 		for (LineaCarrito lineaCarrito : listLineaCarrito) {
-			precioFinal += lineaCarrito.getCantidad() * Double.valueOf(lineaCarrito.getProducto().getPrecio());
+			precioFinal += lineaCarrito.getCantidad() * lineaCarrito.getProducto().getPrecio();
+//			precioPorLinea =lineaPedido.getPrecioFinalLinea()*lineaCarrito.getProducto().getPrecio();
 		}
-	    Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-	    User user = userService.findByEmail(loggedInUser.getName());
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+//		lineaPedido.setPrecioFinalLinea(precioPorLinea);
+		User user = userService.findByEmail(loggedInUser.getName());
 		pedido.setPrecioFinal(precioFinal);
 		pedido.setUsuario(user);
 		
-		model.addAttribute("pedido", pedido); 
-		model.addAttribute("listaCarrito", listLineaCarrito); 
+		model.addAttribute("carroCompra", pedido);
+		model.addAttribute("usuario", user);
+		model.addAttribute("precioLinea", lineaPedido);
+		model.addAttribute("listaProductos", productService.getAll());
+		model.addAttribute("listaCarrito", listLineaCarrito);
 		return "tramitarPedido";
 	}
+
 }

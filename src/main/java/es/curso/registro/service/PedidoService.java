@@ -15,8 +15,7 @@ public interface PedidoService {
 
 	public void addPedido(Pedido pedido);
 
-	public void addPedido(User usuario, String direccion, String comentario, List<LineaPedido> listaLineaPedido,
-			Estado estado);
+	public void addPedido(User usuario, String direccion, String comentario, Estado estado);
 
 	public void deletePedidoById(Integer idPedido);
 

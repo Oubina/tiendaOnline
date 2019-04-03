@@ -35,7 +35,7 @@ public class Pedido {
 
 	@Column(name = "precioFinal")
 	private Double precioFinal;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pedido")
 	private List<LineaPedido> listaLineaPedido;
 
@@ -103,12 +103,10 @@ public class Pedido {
 		this.precioFinal = precioFinal;
 	}
 
-	public Pedido(User usuario, String direccion, String comentario, List<LineaPedido> listaLineaPedido,
-			Estado estado) {
+	public Pedido(User usuario, String direccion, String comentario, Estado estado) {
 		this.usuario = usuario;
 		this.direccion = direccion;
 		this.comentario = comentario;
-		this.listaLineaPedido = listaLineaPedido;
 		this.estado = estado;
 	}
 

@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<Producto> getProductByFiltro(String nombre, String descripcion, String precio) {
+	public List<Producto> getProductByFiltro(String nombre, String descripcion, int precio) {
 		
 		return productRepository.findProductByFiltro(nombre, descripcion, precio);
 	}
@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public void addProducto(String nombre, String descripcion, String marca, String precio, int cantidad) {
+	public void addProducto(String nombre, String descripcion, String marca, int precio, int cantidad) {
 		Producto producto=new Producto(nombre, descripcion, marca, precio, cantidad);
 		productRepository.save(producto);
 		

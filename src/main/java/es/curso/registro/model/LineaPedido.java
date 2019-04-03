@@ -13,10 +13,6 @@ import javax.persistence.Table;
 @Table(name = "lineaPedido")
 public class LineaPedido {
 
-	public void setPrecioFinalLinea(double precioFinalLinea) {
-		this.precioFinalLinea = precioFinalLinea;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idLineaPedido")
@@ -42,6 +38,10 @@ public class LineaPedido {
 
 	public void setIdLineaPedido(int idLineaPedido) {
 		this.idLineaPedido = idLineaPedido;
+	}
+
+	public void setPrecioFinalLinea(double precioFinalLinea) {
+		this.precioFinalLinea = precioFinalLinea;
 	}
 
 	public Pedido getPedido() {
