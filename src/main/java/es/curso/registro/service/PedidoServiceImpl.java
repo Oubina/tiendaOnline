@@ -29,7 +29,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 		return pedidoRepository.findAll();
 	}
-
+//Importante para que estos cambios persistan enn BBDD
 	@Override	
 	@Transactional
 	public void addPedido(Pedido pedido) {

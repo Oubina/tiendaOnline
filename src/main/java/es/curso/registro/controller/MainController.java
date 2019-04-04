@@ -132,6 +132,21 @@ public class MainController {
 				producto.getDescripcion(), producto.getPrecio()));
 		return "productos";
 	}
+	
+	
+	@GetMapping("/deleteStockProduct/{id}")
+	public String restarStockProducto(@PathVariable Integer id) {
+		
+		Producto producto = productService.getProductById(id);
+		
+		for(int i=0;i<listaCarrito.size();i++) {
+			if(listaCarrito.get(i).getIdProducto()==id) {
+				producto.setCantidad(listaCarrito.get(i).getCantidad()-1);
+			}
+		}
+		
+		return "redirect:/productos";
+	}
 
 	@GetMapping(value = "/addProducto")
 	public String getAddProducto(ModelMap model) {
@@ -146,7 +161,7 @@ public class MainController {
 	public String addProducto(ModelMap model, String nombre, String descripcion, String marca, int precio, int cantidad,
 			RedirectAttributes redir) {
 		productService.addProducto(nombre, descripcion, marca, precio, cantidad);
-		//redir.addFlashAttribute("creadoOk", Boolean.TRUE);
+		redir.addFlashAttribute("creadoOk", Boolean.TRUE);
 		return "redirect:/products";
 	}
 
@@ -154,6 +169,21 @@ public class MainController {
 	public String carrito(Model model) {
 		model.addAttribute("listLineaCarrito", listLineaCarrito);
 		return "carrito";
+	}
+
+	// Se quitan las cantidades de un mismo producto dentro de tramitarPedido.html
+	@GetMapping("/deleteCarrito/{id}")
+	public String deleteProductoDelCarrito(@PathVariable Integer id) {
+
+		for (int i = 0; i < listLineaCarrito.size(); i++) {
+			if (listLineaCarrito.get(i).getProducto().getIdProducto() == (id)) {
+				if (listLineaCarrito.get(i).getCantidad() == 1) {
+					listLineaCarrito.remove(i);
+				} else
+					listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad() - 1);
+			}
+		}
+		return "redirect:/carrito";
 	}
 
 	@PostMapping(value = "/addCarrito")
@@ -167,6 +197,7 @@ public class MainController {
 		for (int i = 0; i < listLineaCarrito.size(); i++) {
 			if (listLineaCarrito.get(i).getProducto().getIdProducto() == (producto.getIdProducto())) {
 				listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad() + 1);
+
 				model.addAttribute("producto", new Producto());
 				model.addAttribute("listaProductos", productService.getAll());
 				model.addAttribute("listLineaCarrito", listLineaCarrito);
@@ -189,14 +220,14 @@ public class MainController {
 		Pedido pedido = new Pedido();
 
 		double precioFinal = 0.0D;
-//		double precioPorLinea = 0.0D;
-		LineaPedido lineaPedido=new LineaPedido();
+		
+		LineaPedido lineaPedido = new LineaPedido();
+		
 		for (LineaCarrito lineaCarrito : listLineaCarrito) {
 			precioFinal += lineaCarrito.getCantidad() * lineaCarrito.getProducto().getPrecio();
-//			precioPorLinea =lineaPedido.getPrecioFinalLinea()*lineaCarrito.getProducto().getPrecio();
 		}
+		
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-//		lineaPedido.setPrecioFinalLinea(precioPorLinea);
 		User user = userService.findByEmail(loggedInUser.getName());
 		pedido.setPrecioFinal(precioFinal);
 		pedido.setUsuario(user);
@@ -208,57 +239,30 @@ public class MainController {
 		model.addAttribute("listaCarrito", listLineaCarrito);
 		return "tramitarPedido";
 	}
-	
+
 	@PostMapping(value = "/enviarPedido")
 	public String enviarPedido(Model model, String usuario, String dirección, double precioFinal, String comentario) {
-		
+
 //		pedidoService.addPedido(usuario, dirección, precioFinal, comentario);
 //		model.addAttribute("carroCompra", pedido);
 		return null;
-		
-		
+
 	}
-	
-//	@GetMapping (value="/tramitarPedido")
-//	public String tramitarPedido(Model model, HttpSession session){
-//		Pedido pedido = new Pedido ();
-//		//List<LineaPedido> lineaPedido = new ArrayList<LineaPedido>();
-//		LineaPedido lineaPedido = new LineaPedido();
-//		
-//		double precioFinal = 0.0D;
-//		double precioLinea = 0.0D;
-//		
-//		for (LineaCarrito lineaCarrito : listLineaCarrito) {
-//			precioFinal += lineaCarrito.getCantidad() * Double.valueOf(lineaCarrito.getProducto().getPrecio());
-//			precioLinea =  lineaCarrito.getCantidad() * Double.valueOf(lineaCarrito.getProducto().getPrecio());
-//			
-//			lineaPedido.setPrecioFinalLinea(precioLinea);
-//		}
-//		
-//	    Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-//	    User user = userService.findByEmail(loggedInUser.getName());
-//	    
-//		pedido.setPrecioFinal(precioFinal);
-//		pedido.setUsuario(user);
-//		model.addAttribute("usuario", user);
-//		model.addAttribute("pedido", pedido);
-//		model.addAttribute("lineaPedido", lineaPedido);
-//		return "tramitarPedido";
-//	}
 
 	@PostMapping(value = "/formalizarPedido")
 	public String tramitarPedido2(Model model, Pedido carroCompra) {
+		
 		List<LineaPedido> listaLineaPedido = new ArrayList<LineaPedido>();
-
+		
 		for (LineaCarrito lineaCarrito : listLineaCarrito) {
 			LineaPedido linea = new LineaPedido(lineaCarrito.getProducto(), lineaCarrito.getCantidad(),
 					lineaCarrito.getProducto().getPrecio() * lineaCarrito.getCantidad(), carroCompra);
 			listaLineaPedido.add(linea);
 		}
+		
 		carroCompra.setListaLineaPedido(listaLineaPedido);
 		carroCompra.setDireccion(carroCompra.getUsuario().getDireccion());
 		carroCompra.setEstado(estadoService.getEstadoById(1));
-		System.out.println(carroCompra);
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findByEmail(loggedInUser.getName());
 		carroCompra.setUsuario(user);
