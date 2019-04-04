@@ -65,6 +65,20 @@ public class MainController {
 	public String userIndex2() {
 		return "index";
 	}
+	
+	@GetMapping("/cambiarEstado")
+	public String cambiarEstado() {
+
+		return "listaPedidos";
+	}
+	
+	@PostMapping("/cambiarEstado")
+	public String cambiarEstado2(Model model, Integer estado2) {
+		
+		model.addAttribute("listaEstados", estadoService.getAll());
+		model.addAttribute("listaPedidos", pedidoService.getAll());
+		return "listaPedidos";
+	}
 
 	@GetMapping(value = "/products")
 	public String productos(ModelMap model) {
