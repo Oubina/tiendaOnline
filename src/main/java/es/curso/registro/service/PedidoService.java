@@ -3,7 +3,6 @@ package es.curso.registro.service;
 import java.util.List;
 
 import es.curso.registro.model.Estado;
-import es.curso.registro.model.LineaPedido;
 import es.curso.registro.model.Pedido;
 import es.curso.registro.model.User;
 

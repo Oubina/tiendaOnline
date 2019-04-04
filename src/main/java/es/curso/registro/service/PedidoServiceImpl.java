@@ -71,7 +71,7 @@ public class PedidoServiceImpl implements PedidoService {
 	}
 
 	@Override
-	@Transactional(value = TxType.SUPPORTS)
+	@Transactional
 	public void save(Pedido pedido) {
 		pedidoRepository.save(pedido);
 		

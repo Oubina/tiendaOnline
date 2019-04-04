@@ -77,14 +77,17 @@ public class MainController {
 	public String cambiarEstado2(Model model, Integer idEstado, Integer idPedido) {
 		
 		Pedido pedido = pedidoService.findPedidoById(idPedido);
-		//Estado estado = estadoService.getEstadoById(idEstado);
+//		estadoService.getEstadoById(idEstado).getIdEstado();
 		
-		int aaa = pedido.getEstado().getIdEstado();
-		pedido.getEstado().setIdEstado(idEstado);
-		int bbb = pedido.getEstado().getIdEstado();
-		//pedido.setEstado(estadoService.getEstadoById(idEstado));
-
+//		pedido.getEstado().setIdEstado(estadoService.getEstadoById(idEstado).getIdEstado());
+//		List<Pedido> listaPedidos=pedidoService.getAll();
+//		
+//		for (Pedido pedido2 : listaPedidos) {
+//			if(listaPedidos.contains(pedido2.getIdPedido()==idPedido))
+//		}
 		pedidoService.save(pedido);
+		
+		
 		model.addAttribute("listaEstados", estadoService.getAll());
 		model.addAttribute("listaPedidos", pedidoService.getAll());
 		return "listaPedidos";
