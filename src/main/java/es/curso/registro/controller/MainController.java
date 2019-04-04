@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.curso.registro.model.Estado;
 import es.curso.registro.model.LineaCarrito;
 import es.curso.registro.model.LineaPedido;
 import es.curso.registro.model.Pedido;
@@ -73,8 +74,17 @@ public class MainController {
 	}
 	
 	@PostMapping("/cambiarEstado")
-	public String cambiarEstado2(Model model, Integer estado2) {
+	public String cambiarEstado2(Model model, Integer idEstado, Integer idPedido) {
 		
+		Pedido pedido = pedidoService.findPedidoById(idPedido);
+		//Estado estado = estadoService.getEstadoById(idEstado);
+		
+		int aaa = pedido.getEstado().getIdEstado();
+		pedido.getEstado().setIdEstado(idEstado);
+		int bbb = pedido.getEstado().getIdEstado();
+		//pedido.setEstado(estadoService.getEstadoById(idEstado));
+
+		pedidoService.save(pedido);
 		model.addAttribute("listaEstados", estadoService.getAll());
 		model.addAttribute("listaPedidos", pedidoService.getAll());
 		return "listaPedidos";

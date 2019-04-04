@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,13 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public List<Pedido> getPedidosByFiltro(Integer idEstado) {
 		return pedidoRepository.getPedidosByFiltro(idEstado);
+	}
+
+	@Override
+	@Transactional(value = TxType.SUPPORTS)
+	public void save(Pedido pedido) {
+		pedidoRepository.save(pedido);
+		
 	}
 	
 	

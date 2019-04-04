@@ -3,6 +3,8 @@ package es.curso.registro.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +37,14 @@ public class EstadoServiceImpl implements EstadoService {
 	}
 
 	@Override
+	@Transactional
 	public void addEstado(Estado estado) {
 		estadoRepositorty.save(estado);
 
 	}
 
 	@Override
+	@Transactional
 	public void updateEstado(Estado estado) {
 		estadoRepositorty.save(estado);
 
@@ -54,5 +58,6 @@ public class EstadoServiceImpl implements EstadoService {
 			estadoRepositorty.deleteById(idEstado);
 		}
 	}
+
 
 }

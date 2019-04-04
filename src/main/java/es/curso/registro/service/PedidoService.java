@@ -14,6 +14,8 @@ public interface PedidoService {
 	public List<Pedido> getAll();
 
 	public void addPedido(Pedido pedido);
+	
+	public void save(Pedido pedido);
 
 	public void addPedido(User usuario, String direccion, String comentario, Estado estado, double precioFinal);
 
