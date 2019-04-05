@@ -132,25 +132,42 @@ public class MainController {
 		model.addAttribute("listaUsuarios", userService.getAll());
 		return "listaPedidos";
 	}
-
+	
 //	// Entra para poder filtrar
 	@PostMapping(value = "/list-Pedidos")
-	public String listEstadoByFiltro(Model model, RedirectAttributes redir, Producto producto, int cantidad,
-			double precioFinalLinea, Pedido pedido) {
+	public String listEstadoByFiltro(Model model, Integer idEstado) {
 
-		LineaPedido lineaPedido = new LineaPedido(producto, cantidad, precioFinalLinea, pedido);
-
+//		Estado estado = estadoService.getEstadoById(idEstado);
+		
+		model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(idEstado));
 		model.addAttribute("listaEstados", estadoService.getAll());
 		model.addAttribute("listaUsuarios", userService.getAll());
-		model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getEstado().getIdEstado()));
-
-		model.addAttribute("lineaPedido", lineaPedido.getPedido());
-		model.addAttribute("lineaPedido", lineaPedido.getProducto());
-		model.addAttribute("lineaPedido", lineaPedido.getPrecioFinalLinea());
-		model.addAttribute("lineaPedido", lineaPedido.getCantidad());
-
+		
+//Recuperar el estado a través del id
+//A traves del id estado recuperar los pedidos con ese estado (puedes mandar estado o id)
+//Si mandas estado p.estado = ?1 si no p.estado.idEstado =?1 -> pedidoSErviace y pedidoRepositor
+//Setear en el controlador (aqui) la lista de los pedidos con el filtro hecho.		
 		return "listaPedidos";
 	}
+
+////	// Entra para poder filtrar
+//	@PostMapping(value = "/list-Pedidos")
+//	public String listEstadoByFiltro(Model model, RedirectAttributes redir, Producto producto, int cantidad,
+//			double precioFinalLinea, Pedido pedido) {
+//
+//		LineaPedido lineaPedido = new LineaPedido(producto, cantidad, precioFinalLinea, pedido);
+//
+//		model.addAttribute("listaEstados", estadoService.getAll());
+//		model.addAttribute("listaUsuarios", userService.getAll());
+//		model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(pedido.getEstado().getIdEstado()));
+//
+//		model.addAttribute("lineaPedido", lineaPedido.getPedido());
+//		model.addAttribute("lineaPedido", lineaPedido.getProducto());
+//		model.addAttribute("lineaPedido", lineaPedido.getPrecioFinalLinea());
+//		model.addAttribute("lineaPedido", lineaPedido.getCantidad());
+//
+//		return "listaPedidos";
+//	}
 
 //Para poder aplicar los filtros
 	@PostMapping(value = "/products")

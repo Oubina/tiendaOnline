@@ -57,5 +57,8 @@ public class Estado {
 		this.pedidos = pedidos;
 		this.estado = estado;
 	}
+	
+	
+	
 
 }

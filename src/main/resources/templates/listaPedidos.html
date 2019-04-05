@@ -28,9 +28,9 @@
 							<form action="#" th:action="@{/list-Pedidos}" method="post">
 								<div class="form-group">
 									<div class="container-fluid d-flex justify-content-center">
-										<select th:name="estados">
+										<select th:name="idEstado">
 											<option th:each="estado1 : ${listaEstados}"
-												th:value="${estado1}" th:text="${estado1.estado}"></option>
+												th:value="${estado1.idEstado}" th:text="${estado1.estado}"></option>
 										</select> <input id="submit" type="submit" value="Filtrar"
 											class="col-2" />
 									</div>
@@ -82,12 +82,11 @@
 								<tr th:each="pedido : ${listaPedidos}"
 									th:id="|pedido_${pedido.idPedido}|">
 
-									<td scope="row">
-											<span id="user" data-type="text" data-title="Usuario"
-												th:attr="data-url=@{/pedido}, data-pk=${pedido.idPedido}, data-value=${pedido.usuario.nombre}"
-												class="inline-editable" th:text="${pedido.usuario.nombre}">Nombre
-												del usuario</span>
-									</td>
+									<td scope="row"><span id="user" data-type="text"
+										data-title="Usuario"
+										th:attr="data-url=@{/pedido}, data-pk=${pedido.idPedido}, data-value=${pedido.usuario.nombre}"
+										class="inline-editable" th:text="${pedido.usuario.nombre}">Nombre
+											del usuario</span></td>
 
 									<td class="text-left"><span id="direccion"
 										data-type="text" data-title="Direccion"
@@ -107,17 +106,16 @@
 										class="inline-editable" th:text="${pedido.estado.estado}">Estado
 											del pedido</span></td>
 									<td>
-										<form action="#" th:action="@{/cambiarEstado}"
-											th:object="${estado2}" method="post">
+										<form action="#" th:action="@{/cambiarEstado}" method="post">
 											<div class="form-group">
-											<input type="hidden" name ="idPedido" th:value ="${pedido.idPedido}">
+												<input type="hidden" name="idPedido"
+													th:value="${pedido.idPedido}">
 												<div class="container-fluid d-flex justify-content-center">
 													<select th:name="idEstado">
-													
-													<option th:each="estado : ${listaEstados}"
+
+														<option th:each="estado : ${listaEstados}"
 															th:value="${estado.idEstado}" th:text="${estado.estado}"
-															th:if="${estado.idEstado != pedido.estado.idEstado}" selected
-															 ></option>
+															th:selected="${estado.idEstado == pedido.estado.idEstado}"></option>
 													</select> <input id="submit" type="submit" value="Cambiar estado"
 														class="col-2" />
 												</div>
