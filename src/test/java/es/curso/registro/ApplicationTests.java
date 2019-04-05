@@ -1,4 +1,4 @@
-package net.javaguides.springboot.springsecurity;
+package es.curso.registro;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

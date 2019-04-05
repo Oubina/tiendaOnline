@@ -138,8 +138,12 @@ public class MainController {
 	public String listEstadoByFiltro(Model model, Integer idEstado) {
 
 //		Estado estado = estadoService.getEstadoById(idEstado);
+		if(idEstado==6) {
+			model.addAttribute("listaPedidos", pedidoService.getAll());
+		}else {
+			model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(idEstado));
+		}
 		
-		model.addAttribute("listaPedidos", pedidoService.getPedidosByFiltro(idEstado));
 		model.addAttribute("listaEstados", estadoService.getAll());
 		model.addAttribute("listaUsuarios", userService.getAll());
 		
@@ -262,9 +266,10 @@ public class MainController {
 				if (producto.getCantidad() == 0) {
 					producto.setCantidad(0);
 					productService.saveProducto(producto);
-				} else
-					producto.setCantidad(producto.getCantidad() - 1);
-				productService.saveProducto(producto);
+				} 
+//				else
+//					producto.setCantidad(producto.getCantidad() - 1);
+//				productService.saveProducto(producto);
 
 				model.addAttribute("producto", new Producto());
 				model.addAttribute("listaProductos", productService.getAll());

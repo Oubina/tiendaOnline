@@ -114,7 +114,7 @@
 													<select th:name="idEstado">
 
 														<option th:each="estado : ${listaEstados}"
-															th:value="${estado.idEstado}" th:text="${estado.estado}"
+															th:value="${estado.idEstado}" th:text="${estado.estado}" th:if ="${estado.idEstado}!=6" draggable="false"
 															th:selected="${estado.idEstado == pedido.estado.idEstado}"></option>
 													</select> <input id="submit" type="submit" value="Cambiar estado"
 														class="col-2" />
