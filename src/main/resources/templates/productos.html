@@ -93,10 +93,13 @@
 									<td class="text-center">
 										<form action="#" th:action="@{/addCarrito}" method="post">
 
+											<!-- 
+										aqui si producto.cantidad = 0, desahilitar boton!! o borrar el boton
+										 -->
 											<input type="hidden" name="idd"
 												th:value="${producto.idProducto}"> <input
-												id="submit" type="submit" value="Añadir al carrito"
-												class="col-2" />
+												id="submit" th:disabled="${producto.cantidad == 0}"
+												type="submit" value="Añadir al carrito" class="col-2" />
 
 										</form>
 									</td>

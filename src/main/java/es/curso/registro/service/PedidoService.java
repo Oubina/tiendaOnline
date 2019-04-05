@@ -22,6 +22,6 @@ public interface PedidoService {
 
 	public void updatePedido(Integer idPedido);
 
-	public List<Pedido> getPedidosByFiltro(Integer id_estado);
+	public List<Pedido> getPedidosByFiltro(Integer idEstado);
 
 }

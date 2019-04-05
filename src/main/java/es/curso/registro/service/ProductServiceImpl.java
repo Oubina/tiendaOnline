@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.curso.registro.model.Pedido;
 import es.curso.registro.model.Producto;
 import es.curso.registro.repository.ProductRepository;
 
@@ -41,6 +42,20 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public Producto getProductById(Integer id) {
 		return productRepository.findById(id).get();
+	}
+	
+	@Override
+	public void updateProducto(Integer idProducto) {
+		Producto productoUpdateProducto = productRepository.findById(idProducto).get();
+
+		productRepository.save(productoUpdateProducto);
+
+	}
+	
+	@Override
+	
+	public void saveProducto(Producto producto) {
+		productRepository.save(producto);
 	}
 
 }

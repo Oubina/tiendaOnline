@@ -16,4 +16,8 @@ public interface ProductService {
 
 	public Producto getProductById(Integer id);
 
+	public void updateProducto(Integer idProducto);
+	
+	public void saveProducto(Producto producto);
+
 }

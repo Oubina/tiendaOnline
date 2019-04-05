@@ -34,6 +34,7 @@ public class MainController {
 
 	List<Producto> listaCarrito = new ArrayList<Producto>();
 	List<LineaCarrito> listLineaCarrito = new ArrayList<LineaCarrito>();
+	List<LineaPedido> listaPedidos = new ArrayList<LineaPedido>();
 
 	@Autowired
 	UserService userService;
@@ -66,30 +67,24 @@ public class MainController {
 	public String userIndex2() {
 		return "index";
 	}
-	
+
 	@GetMapping("/cambiarEstado")
 	public String cambiarEstado() {
 
 		return "listaPedidos";
 	}
-	
+
 	@PostMapping("/cambiarEstado")
 	public String cambiarEstado2(Model model, Integer idEstado, Integer idPedido) {
-		
+
 		Pedido pedido = pedidoService.findPedidoById(idPedido);
-//		estadoService.getEstadoById(idEstado).getIdEstado();
-		
-//		pedido.getEstado().setIdEstado(estadoService.getEstadoById(idEstado).getIdEstado());
-//		List<Pedido> listaPedidos=pedidoService.getAll();
-//		
-//		for (Pedido pedido2 : listaPedidos) {
-//			if(listaPedidos.contains(pedido2.getIdPedido()==idPedido))
-//		}
-		pedidoService.save(pedido);
-		
-		
-		model.addAttribute("listaEstados", estadoService.getAll());
+		Estado estado = estadoService.getEstadoById(idEstado);
+		pedido.setEstado(estado);
+		pedidoService.updatePedido(idPedido);
+
 		model.addAttribute("listaPedidos", pedidoService.getAll());
+		model.addAttribute("listaEstados", estadoService.getAll());
+		model.addAttribute("listaUsuarios", userService.getAll());
 		return "listaPedidos";
 	}
 
@@ -102,6 +97,11 @@ public class MainController {
 
 	@GetMapping("/admin/home")
 	public String listaUsuarios(Model model) {
+		/*
+		 * en vez de llamar a get all, crearse un servicio y un repositorio que solo
+		 * recupere productos con cantidad > 0 select p from froductos where cantidad >0
+		 * 
+		 */
 		model.addAttribute("listaUsuarios", userService.getAll());
 		return "listaUsuarios";
 	}
@@ -159,19 +159,18 @@ public class MainController {
 				producto.getDescripcion(), producto.getPrecio()));
 		return "productos";
 	}
-	
-	
+
 	@GetMapping("/deleteStockProduct/{id}")
 	public String restarStockProducto(@PathVariable Integer id) {
-		
+
 		Producto producto = productService.getProductById(id);
-		
-		for(int i=0;i<listaCarrito.size();i++) {
-			if(listaCarrito.get(i).getIdProducto()==id) {
-				producto.setCantidad(listaCarrito.get(i).getCantidad()-1);
+
+		for (int i = 0; i < listaCarrito.size(); i++) {
+			if (listaCarrito.get(i).getIdProducto() == id) {
+				producto.setCantidad(listaCarrito.get(i).getCantidad() - 1);
 			}
 		}
-		
+
 		return "redirect:/productos";
 	}
 
@@ -202,11 +201,24 @@ public class MainController {
 	@GetMapping("/deleteCarrito/{id}")
 	public String deleteProductoDelCarrito(@PathVariable Integer id) {
 
+		Producto producto = productService.getProductById(id);
+
 		for (int i = 0; i < listLineaCarrito.size(); i++) {
 			if (listLineaCarrito.get(i).getProducto().getIdProducto() == (id)) {
+				// Si la cantidad del producto en el carrito es = 1 elimina la fila completa.
 				if (listLineaCarrito.get(i).getCantidad() == 1) {
+					/*
+					 * Recuperar el producto Con la cantidad del producto recupearla y sumarle 1
+					 * Guardar producto producto.save (producto)
+					 */
+
+					// De esta forma añadimos al stock
+					producto.setCantidad(producto.getCantidad() + 1);
+					productService.saveProducto(producto);
+
 					listLineaCarrito.remove(i);
-				} else
+
+				} else// Si no va eliminando uno a uno
 					listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad() - 1);
 			}
 		}
@@ -224,6 +236,18 @@ public class MainController {
 		for (int i = 0; i < listLineaCarrito.size(); i++) {
 			if (listLineaCarrito.get(i).getProducto().getIdProducto() == (producto.getIdProducto())) {
 				listLineaCarrito.get(i).setCantidad(listLineaCarrito.get(i).getCantidad() + 1);
+				/*
+				 * Recuperar el producto Con la cantidad del producto recupearla y restar 1
+				 * Guardar producto producto.save (producto)
+				 */
+
+				// De esta forma restamos cantidades del stock
+				if (producto.getCantidad() == 0) {
+					producto.setCantidad(0);
+					productService.saveProducto(producto);
+				} else
+					producto.setCantidad(producto.getCantidad() - 1);
+				productService.saveProducto(producto);
 
 				model.addAttribute("producto", new Producto());
 				model.addAttribute("listaProductos", productService.getAll());
@@ -231,6 +255,12 @@ public class MainController {
 				return "productos";
 			}
 		}
+		/*
+		 * Recuperar el producto Con la cantidad del producto recupearla y restar 1
+		 * Guardar producto producto.save (producto)
+		 */
+		producto.setCantidad(producto.getCantidad() - 1);
+		productService.saveProducto(producto);
 
 		listLineaCarrito.add(lineaCarrito);
 		listaCarrito.add(producto);
@@ -247,13 +277,13 @@ public class MainController {
 		Pedido pedido = new Pedido();
 
 		double precioFinal = 0.0D;
-		
+
 		LineaPedido lineaPedido = new LineaPedido();
-		
+
 		for (LineaCarrito lineaCarrito : listLineaCarrito) {
 			precioFinal += lineaCarrito.getCantidad() * lineaCarrito.getProducto().getPrecio();
 		}
-		
+
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findByEmail(loggedInUser.getName());
 		pedido.setPrecioFinal(precioFinal);
@@ -267,26 +297,17 @@ public class MainController {
 		return "tramitarPedido";
 	}
 
-	@PostMapping(value = "/enviarPedido")
-	public String enviarPedido(Model model, String usuario, String dirección, double precioFinal, String comentario) {
-
-//		pedidoService.addPedido(usuario, dirección, precioFinal, comentario);
-//		model.addAttribute("carroCompra", pedido);
-		return null;
-
-	}
-
 	@PostMapping(value = "/formalizarPedido")
 	public String tramitarPedido2(Model model, Pedido carroCompra) {
-		
+
 		List<LineaPedido> listaLineaPedido = new ArrayList<LineaPedido>();
-		
+
 		for (LineaCarrito lineaCarrito : listLineaCarrito) {
 			LineaPedido linea = new LineaPedido(lineaCarrito.getProducto(), lineaCarrito.getCantidad(),
 					lineaCarrito.getProducto().getPrecio() * lineaCarrito.getCantidad(), carroCompra);
 			listaLineaPedido.add(linea);
 		}
-		
+
 		carroCompra.setListaLineaPedido(listaLineaPedido);
 		carroCompra.setDireccion(carroCompra.getUsuario().getDireccion());
 		carroCompra.setEstado(estadoService.getEstadoById(1));
